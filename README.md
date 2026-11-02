@@ -26,3 +26,17 @@ This source uses React, Vinext, and Cloudflare Workers. The existing private dem
 ## Validation
 
 Production build and TypeScript checks passed. Live generation needs an API key; browser visual QA was unavailable in the build environment.
+
+## Deploy on Render
+
+Use the included `render.yaml` Blueprint, or create a Node Web Service from this repository.
+
+- Branch: `main`
+- Build command: `npm ci --include=dev && npm run build:render`
+- Start command: `npm run start:render`
+- Health check: `/api/health`
+- Node version: `22.16.0`
+
+No API key needs to be stored in Render; each visitor enters their own key in Settings. The Render deployment is public by default. Do not treat the workspace UI as authentication.
+
+The Next.js production build and local startup passed; `/api/health` and the homepage returned HTTP 200, and image generation rejected missing keys.

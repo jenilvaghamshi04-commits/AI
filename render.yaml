@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: pixelroom-ai
+    runtime: node
+    plan: free
+    repo: https://github.com/jenilvaghamshi04-commits/AI
+    branch: main
+    buildCommand: npm ci --include=dev && npm run build:render
+    startCommand: npm run start:render
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.16.0
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
