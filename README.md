@@ -1,6 +1,6 @@
 # Pixelroom — AI Image Studio
 
-Chat-style image generation studio with OpenAI API settings, style presets, responsive layout, dark/light themes, browser-local gallery, and image downloads.
+Chat-style image generation studio with multiple image API providers, style presets, responsive layout, dark/light themes, browser-local gallery, and image downloads.
 
 ## Run locally
 
@@ -15,7 +15,18 @@ Open the local URL printed in the terminal. Production build: `npm run build`.
 
 ## Generate images
 
-Open Settings, enter your OpenAI API key, select a model, and save the connection. API billing and model access are required. The key is held in browser memory for the current tab only and forwarded by `/api/generate` to OpenAI; it is not stored in source or image history. Refreshing clears the key.
+Open Settings, select an image provider, enter its API key, and select a model. You can enter keys for multiple providers and switch with the “Create with” selector above the prompt.
+
+| Provider | Image models |
+| --- | --- |
+| OpenAI | GPT Image 1.5, GPT Image 1 Mini, GPT Image 2 |
+| Google Gemini | Gemini 3.1 Flash Image, Nano Banana 2.1, Gemini 2.5 Flash Image |
+| Stability AI | Stable Image Core, Stable Image Ultra |
+| Together AI | FLUX.1 Schnell, FLUX.2 Pro |
+
+Each provider requires its own API key, credits, and model access. Keys are held separately in browser memory for this tab and are sent through `/api/generate` only to the selected provider. They are never written to source, local storage, or image history. Refreshing clears all keys. A “Key added” indicator confirms entry, not provider validation. Aspect ratios are mapped to each API; actual pixel dimensions can vary by model.
+
+The server uses fixed, allowlisted provider endpoints and models. It has no automatic fallback: a failed request never switches to another provider or incurs charges there.
 
 Creations are saved in this browser's local storage, subject to browser storage limits. Download images to keep copies. Inspiration images are stock photos from Unsplash.
 
@@ -25,7 +36,7 @@ This source uses React, Vinext, and Cloudflare Workers. The existing private dem
 
 ## Validation
 
-Production build and TypeScript checks passed. Live generation needs an API key; browser visual QA was unavailable in the build environment.
+Production build and TypeScript checks passed. Mocked adapter tests cover all four request/response formats, credentials, aspect ratios, invalid input, provider errors, key redaction, timeouts, and session key isolation. Run them with `node --import tsx --test tests/image-providers.test.ts`. Live provider calls still require real keys; browser visual QA was unavailable in this environment.
 
 ## Deploy on Render
 
